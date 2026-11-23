@@ -118,9 +118,9 @@ function show(d, sample){
   <div class="note">${sample ? "ده مثال لشكل الصفحة. " : ""}يوماس — ألومنيوم وزجاج وواجهات${d.dt ? " · " + esc(d.dt) : ""}</div>`;
 }
 
-// the link carries: v1|project|window|unit/of|system|width|height|colour|sashes|fixed height|profiles
+// the link carries: v1~project~window~unit/of~system~width~height~colour~sashes~fixed height~profiles
 function decode(h){
-  const f = decodeURIComponent(h).split("|");
+  const f = decodeURIComponent(h).split(/[|~]/);
   if (f[0] !== "v1" || f.length < 11) throw new Error("bad");
   const [u1, u2] = (f[3] || "1/1").split("/").map(Number);
   return {p:f[1], r:f[2], u:[u1, u2], y:f[4], w:f[5], h:f[6], c:f[7], n:+f[8] || 2, fb:f[9],
