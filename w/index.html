@@ -35,8 +35,10 @@ section{padding:18px 20px;border-bottom:1px solid var(--line)}
 h2{font-size:14px;font-weight:600;color:var(--muted);margin:0 0 10px}
 .fig{display:block;width:100%;height:auto}
 .profiles{display:grid;gap:8px}
-.prof{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:12px;padding:8px 10px;border:1px solid var(--line);border-radius:12px}
-.prof svg{width:44px;height:30px}
+.prof{display:grid;grid-template-columns:84px 1fr auto;align-items:center;gap:12px;padding:8px 10px;border:1px solid var(--line);border-radius:12px}
+.prof svg{width:44px;height:30px;justify-self:center}
+.prof .pic{width:84px;height:56px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:3px}
+.prof .pic img{max-width:100%;max-height:100%;object-fit:contain}
 .prof span{font-weight:600}
 .prof b{font-size:17px;direction:ltr;font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -49,6 +51,7 @@ h2{font-size:14px;font-weight:600;color:var(--muted);margin:0 0 10px}
 </style>
 </head>
 <body>
+<script src="p.js"></script>
 <main class="tag" id="app"><div class="err">جاري فتح بيانات الشباك…</div></main>
 <script>
 {
@@ -66,6 +69,11 @@ const icon = k => {
     x:'<path d="M4 10h36v12H4zM10 14v4h24v-4z"/>', d:'<path d="M12 6h6v18h14v4H12z"/>',
   }[k] || '<rect x="8" y="8" width="28" height="14"/>';
   return `<svg viewBox="0 0 44 30" aria-hidden="true"><g fill="#9aa6b2" stroke="#4f5d6b" stroke-width="1">${p}</g></svg>`;
+};
+
+const pic = (k, code) => {
+  const src = (window.UOMAS_PROFILES || {})[code];
+  return src ? `<div class="pic"><img src="${src}" alt="${esc(code)}"></div>` : icon(k);
 };
 
 function drawing(d){
@@ -99,7 +107,7 @@ function show(d, sample){
   const fin = FIN[d.c] || [d.c, "#c9cfd6"];
   const unit = d.u && d.u[1] > 1 ? `<div class="unit">${d.u[0]} من ${d.u[1]}</div>` : "";
   const profs = (d.k || []).map(([k, code]) =>
-    `<div class="prof">${icon(k)}<span>${esc(KIND[k] || k)}</span><b>${esc(code)}</b></div>`).join("");
+    `<div class="prof">${pic(k, code)}<span>${esc(KIND[k] || k)}</span><b>${esc(code)}</b></div>`).join("");
   document.getElementById("app").innerHTML = `
   <header>
     <div class="brand"><svg viewBox="0 0 64 64"><rect x="4" y="4" width="56" height="56" rx="12" fill="#0b1f33" stroke="#ffffff33"/><rect x="13" y="13" width="38" height="38" rx="2" fill="#c9d1da"/><rect x="17" y="17" width="14" height="30" fill="#5fa6d4"/><rect x="33" y="17" width="14" height="30" fill="#5fa6d4"/><rect x="13" y="49" width="38" height="3" fill="#e2a72e"/></svg>
